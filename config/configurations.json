@@ -1,0 +1,5 @@
+{
+"postgres_jdbc_driver_location" :"",
+"etl_tables_files_location": "",
+"no_parallel_procesing_wrtiting_to_tables" : ""
+}
