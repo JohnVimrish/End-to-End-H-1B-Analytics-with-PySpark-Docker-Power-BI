@@ -1,0 +1,2 @@
+class JsonTagVariables():
+ pass 

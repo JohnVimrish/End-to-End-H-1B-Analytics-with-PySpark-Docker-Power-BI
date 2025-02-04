@@ -1,0 +1,24 @@
+{
+    "spark-configirations": {
+        "app-name": "ComprehensiveSparkJob",
+        "master": "local[*]",
+        "driver-memory": "4g",
+        "driver-cores": "1",
+        "ui-port": "4040",
+        "executor-memory": "2g",
+        "executor-cores": "2",
+        "executor-instances": "3",
+        "parallelism": "6",
+        "shuffle-partitions": "6",
+        "task-cpus": "1",
+        "memory-fraction": "0.8",
+        "memory-storagefraction": "0.5",
+        "serializer": "org.apache.spark.serializer.KryoSerializer",
+        "kryo-registration": "true",
+        "kryo-classes_to_register": "org.apache.spark.sql.Row",
+        "eventlog_enabled": "true",
+        "eventlog_dir": "/root/spark_log/spark-events/",
+        "history_fs_logdirectory": "/root/spark_log/spark-history/",
+        "memory-caching" : "M&D"
+    }
+}
