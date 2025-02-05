@@ -1,30 +1,33 @@
 from pyspark import SparkConf
+from jsonmanipulations.configparametervalue import ConfigParametersValue as CPV
 
 class SparkConf () :
     def __init__ (self,) :
         self.sparkconfiguration  = SparkConf()
 
     def __init_configuration_from_config_inputs  ( self,) :
-            self.sparkconfiguration.set("spark.app.name", "ComprehensiveSparkJob") 
-            self.sparkconfiguration.set("spark.master", "local[*]")                
-            self.sparkconfiguration.set("spark.driver.memory", "4g")      
-            self.sparkconfiguration.set("spark.driver.cores", "1")                 
-            self.sparkconfiguration.set("spark.ui.port", "4040")                
-            self.sparkconfiguration.set("spark.executor.memory", "2g")      
-            self.sparkconfiguration.set("spark.executor.cores", "2")               
-            self.sparkconfiguration.set("spark.executor.instances", "3")         
-            self.sparkconfiguration.set("spark.default.parallelism", "6")         
-            self.sparkconfiguration.set("spark.sql.shuffle.partitions", "6")       
-            self.sparkconfiguration.set("spark.task.cpus", "1")  
-            self.sparkconfiguration.set("spark.memory.fraction", "0.8")            
-            self.sparkconfiguration.set("spark.memory.storageFraction", "0.5")     
-            self.sparkconfiguration.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")  
-            self.sparkconfiguration.set("spark.kryo.registrationRequired", "true")  
-            self.sparkconfiguration.set("spark.kryo.classesToRegister", "org.apache.spark.sql.Row")  
-            self.sparkconfiguration.set("spark.eventLog.enabled", "true")           
-            self.sparkconfiguration.set("spark.eventLog.dir", "/root/spark_log/spark-events/")  
-            self.sparkconfiguration.set("spark.history.fs.logDirectory", "/root/spark_log/spark-history/")  
+            self.sparkconfiguration.set("spark.app.name",CPV.sp_conf_app_name) 
+            self.sparkconfiguration.set("spark.master", CPV.sp_conf_master)                
+            self.sparkconfiguration.set("spark.driver.memory", CPV.sp_conf_driver_memory)      
+            self.sparkconfiguration.set("spark.driver.cores", CPV.sp_conf_driver_cores)                 
+            self.sparkconfiguration.set("spark.ui.port", CPV.sp_conf_ui_port)                
+            self.sparkconfiguration.set("spark.executor.memory", CPV.sp_conf_executor_memory)      
+            self.sparkconfiguration.set("spark.executor.cores", CPV.sp_conf_executor_cores)               
+            self.sparkconfiguration.set("spark.executor.instances", CPV.sp_conf_executor_instances)         
+            self.sparkconfiguration.set("spark.default.parallelism",CPV.sp_conf_parallelism)         
+            self.sparkconfiguration.set("spark.sql.shuffle.partitions", CPV.sp_conf_shuffle_partitions)       
+            self.sparkconfiguration.set("spark.task.cpus", CPV.sp_conf_task_cpus)  
+            self.sparkconfiguration.set("spark.memory.fraction",CPV.sp_conf_memory_fraction)            
+            self.sparkconfiguration.set("spark.memory.storageFraction",CPV.sp_conf_memory_storage_fraction)     
+            self.sparkconfiguration.set("spark.serializer", CPV.sp_conf_serializer)  
+            self.sparkconfiguration.set("spark.kryo.registrationRequired",CPV.sp_conf_kryo_registration)  
+            self.sparkconfiguration.set("spark.kryo.classesToRegister", CPV.sp_conf_task_kryo_classes_to_register)  
+            self.sparkconfiguration.set("spark.eventLog.enabled", CPV.sp_conf_eventlog_enabled)           
+            self.sparkconfiguration.set("spark.eventLog.dir", CPV.sp_conf_history_fs_logdirectory)  
+            self.sparkconfiguration.set("spark.history.fs.logDirectory",CPV.sp_conf_history_fs_logdirectory)  
+            self.sparkconfiguration.set("spark.jars", CPV.postgres_jdbc_loc)
 
     def  fetch_spark_congiration_obj  (self ):
-         return self.sparkconfiguration
+        self.__init_configuration_from_config_inputs()
+        return self.sparkconfiguration
          

@@ -1,8 +1,9 @@
 from datetime import datetime as dt
 import json as js
+import configparser
 
 
-class JsonValueExtractor():
+class JsonManupulatorNModifier():
 
     def __init__(self,
                  file_location_path: str
@@ -55,3 +56,15 @@ class JsonValueExtractor():
             return json_extractor(json_keys_extracted)
         except Exception as excep:
             print('Error :', excep)
+    
+    @staticmethod
+    def  write_json_data (json_data,destination) :
+        with open(destination, 'w') as out_file:
+            js.dump(json_data, out_file)
+
+
+    @staticmethod
+    def  read_config_file (config_file_path:str) :
+        config = configparser.ConfigParser()
+        config.read(config_file_path)
+        return config

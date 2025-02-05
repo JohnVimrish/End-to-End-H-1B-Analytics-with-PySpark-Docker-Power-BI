@@ -1,5 +1,5 @@
 {
-    "spark-configirations": {
+    "spark-configurations": {
         "app-name": "ComprehensiveSparkJob",
         "master": "local[*]",
         "driver-memory": "4g",
@@ -18,7 +18,6 @@
         "kryo-classes_to_register": "org.apache.spark.sql.Row",
         "eventlog_enabled": "true",
         "eventlog_dir": "/root/spark_log/spark-events/",
-        "history_fs_logdirectory": "/root/spark_log/spark-history/",
-        "memory-caching" : "M&D"
+        "history_fs_logdirectory": "/root/spark_log/spark-history/"
     }
 }

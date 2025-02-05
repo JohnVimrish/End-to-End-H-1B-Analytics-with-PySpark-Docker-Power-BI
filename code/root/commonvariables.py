@@ -1,2 +1,3 @@
 class CommonVariables () :
-    pass
+    
+    etl_project_directory = str ()
