@@ -29,7 +29,7 @@ class  Common_Utils_Operations  () :
             return  [json.loads(values) for values in file_content.decode('utf-8').split("\n") if not values =='' ]
         
     def  return_files_list ( directory:str, file_type=None) :
-        return   [f for f in listdir(directory) if (isfile(join(directory, f)))] if file_type is None else [f for f in listdir(directory) if (isfile(join(directory, f)) and match_file_type(f,file_type))]
+        return   [f for f in listdir(directory) if (isfile(join(directory, f)))] if file_type is None else [f for f in listdir(directory) if (isfile(join(directory, f)) and Common_Utils_Operations.match_file_type(f,file_type))]
 
     def check_is_not_empty_list (input_list :list) :
         return  True   if input_list else False
