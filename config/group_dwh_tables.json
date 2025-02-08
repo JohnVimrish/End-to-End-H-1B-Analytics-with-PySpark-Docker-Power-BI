@@ -1,0 +1,209 @@
+{
+    "write_mode" :"append",
+    "target_tables_groups": [
+        {
+            "input_type": "csv",
+            "use_dft_of" : "spark",
+            "csv_input": [
+                "Combined_LCA_Disclosure_Data_FY2020.csv",
+                "Combined_LCA_Disclosure_Data_FY2021.csv",
+                "Combined_LCA_Disclosure_Data_FY2022.csv",
+                "Combined_LCA_Disclosure_Data_FY2023.csv",
+                "Combined_LCA_Disclosure_Data_FY2024.csv"
+            ],
+            "multiple_table_present": false,
+            "multiple_table_input_present": true,
+            "table_mapping": {
+                "h1b_analysis_stg.stg_lca_disclosure_data": "data for  lca Disclosure_data"
+            },
+            "execute_prequery": true,
+            "execute_postquery": true,
+            "alias_column_names": false,
+            "alias_query": "",
+            "prequery": [
+                "SELECT * FROM h1b_analysis_stg.stg_lca_disclosure_data WHERE CASE_NUMBER IS NOT NULL"
+            ],
+            "postquery": [
+                "SELECT * FROM h1b_analysis_stg.stg_lca_disclosure_data WHERE CASE_NUMBER IS NOT NULL"
+            ]
+        },
+        {
+            "input_type": "csv",
+            "use_dft_of" : "spark",
+            "csv_input": [
+                "h1b15.csv",
+                "h1b16.csv",
+                "h1b17.csv",
+                "h1b18.csv"
+            ],
+            "multiple_table_present": false,
+            "multiple_table_input_present": true,
+            "table_mapping": {
+                "h1b_analysis_stg.stg_h1b_data": "data for  h1b_data"
+            },
+            "execute_prequery": true,
+            "execute_postquery": true,
+            "alias_column_names": false,
+            "alias_query": "",
+            "prequery": [
+                "SELECT * FROM h1b_analysis_stg.stg_lca_disclosure_data WHERE CASE_NUMBER IS NOT NULL"
+            ],
+            "postquery": [
+                "SELECT * FROM h1b_analysis_stg.stg_lca_disclosure_data WHERE CASE_NUMBER IS NOT NULL"
+            ]
+        },
+        {
+            "input_type": "csv",
+            "use_dft_of" : "spark",
+            "csv_input": "h1b11-15.csv",
+            "multiple_table_present": false,
+            "multiple_table_input_present": false,
+            "table_mapping": {
+                "h1b_analysis_stg.stg_h1b_data_second": "data for  h1b data second"
+            },
+            "execute_prequery": true,
+            "execute_postquery": true,
+            "alias_column_names": false,
+            "alias_query": "",
+            "prequery": [
+                "SELECT * FROM h1b_analysis_stg.stg_lca_disclosure_data WHERE CASE_NUMBER IS NOT NULL"
+            ],
+            "postquery": [
+                "SELECT * FROM h1b_analysis_stg.stg_lca_disclosure_data WHERE CASE_NUMBER IS NOT NULL"
+            ]
+        },
+        {
+            "input_type": "csv",
+            "use_dft_of" : "spark",
+            "csv_input": "h1b_disclosure_data_2015_2019.csv",
+            "multiple_table_present": false,
+            "multiple_table_input_present": false,
+            "table_mapping": {
+                "h1b_analysis_stg.stg_h1b_disclosure_data": "data for  h1b Disclosure_data"
+            },
+            "execute_prequery": true,
+            "execute_postquery": true,
+            "alias_column_names": false,
+            "alias_query": "",
+            "prequery": [
+                "SELECT * FROM h1b_analysis_stg.stg_lca_disclosure_data WHERE CASE_NUMBER IS NOT NULL"
+            ],
+            "postquery": [
+                "SELECT * FROM h1b_analysis_stg.stg_lca_disclosure_data WHERE CASE_NUMBER IS NOT NULL"
+            ]
+        },
+        {
+            "input_type": "csv",
+            "use_dft_of" : "spark",
+            "csv_input": [
+                "TRK_13139_FY2021.csv",
+                "TRK_13139_FY2022.csv",
+                "TRK_13139_FY2023.csv",
+                "TRK_13139_FY2024_multi_reg.csv",
+                "TRK_13139_FY2024_single_reg.csv"
+            ],
+            "multiple_table_present": false,
+            "multiple_table_input_present": true,
+            "table_mapping": {
+                "h1b_analysis_stg.stg_trk_disclosure_data": "data for  trk Disclosure_data"
+            },
+            "execute_prequery": true,
+            "execute_postquery": true,
+            "alias_column_names": false,
+            "alias_query": "",
+            "prequery": [
+                "SELECT * FROM h1b_analysis_stg.stg_lca_disclosure_data WHERE CASE_NUMBER IS NOT NULL"
+            ],
+            "postquery": [
+                "SELECT * FROM h1b_analysis_stg.stg_lca_disclosure_data WHERE CASE_NUMBER IS NOT NULL"
+            ]
+        },
+        {
+            "input_type": "excel",
+            "use_dft_of" : "pandas",
+            "sheet": "Data Dictionary",
+            "excel_input": "TRK_13139_Data_Dictionary.xlsx",
+            "multiple_table_present": true,
+            "multiple_table_input_present": false,
+            "usecols": "A:B",
+            "table_mapping": {
+                "h1b_analysis_stg.stg_trk_metadata": "Lookup Table for TRK_Metadata",
+                "h1b_analysis_stg.stg_class_preference": "Lookup Table for Class_Preference",
+                "h1b_analysis_stg.stg_basis_for_classification": "Lookup Table for Basis for Classification",
+                "h1b_analysis_stg.stg_requested_action": "Lookup Table for Requested Action",
+                "h1b_analysis_stg.stg_ben_education_code": "Lookup Table for Ben Education Code"
+            },
+            "execute_prequery": false,
+            "execute_postquery": false,
+            "alias_column_names": true,
+            "alias_query": {
+                "h1b_analysis_stg.stg_trk_metadata": {
+                    "Column": "lookup_code",
+                    "Description": "description"
+                },
+                "h1b_analysis_stg.stg_class_preference": {
+                    "Class_Preference": "class_preference",
+                    "Code Description": "code_description"
+                },
+                "h1b_analysis_stg.stg_basis_for_classification": {
+                    "Basis_for_Classification": "basis_of_classification",
+                    "Code Description": "code_description"
+                },
+                "h1b_analysis_stg.stg_requested_action": {
+                    "Requested_Action": "requested_action",
+                    "Code Description": "code_description"
+                },
+                "h1b_analysis_stg.stg_ben_education_code": {
+                    "Ben_Education_Code": "ben_education_code",
+                    "Code Description": "code_description"
+                }
+            },
+            "prequery": [],
+            "postquery": []
+        },
+        {
+            "input_type": "excel",
+            "use_dft_of" : "pandas",
+            "sheet": "I-129 H1B Job Codes",
+            "excel_input": "TRK_13139_Data_Dictionary.xlsx",
+            "multiple_table_present": false,
+            "multiple_table_input_present": false,
+            "usecols": "A:C",
+            "table_mapping": {
+                "h1b_analysis_stg.stg_job_codes": "I-129 H1B Job Code"
+            },
+            "execute_prequery": false,
+            "execute_postquery": false,
+            "alias_column_names": true,
+            "alias_query": {
+                "Occupation Category": "occupation_category",
+                "Occupation Code": "occupation_code",
+                "Occupation Description": "occupation_description"
+            },
+            "prequery": [],
+            "postquery": []
+        },
+        {
+            "input_type": "excel",
+            "use_dft_of" : "pandas",
+            "sheet": "Country Codes",
+            "excel_input": "TRK_13139_Data_Dictionary.xlsx",
+            "multiple_table_present": false,
+            "multiple_table_input_present": false,
+            "usecols": "A:C",
+            "table_mapping": {
+                "h1b_analysis_stg.stg_country_code": "Country Codes"
+            },
+            "execute_prequery": false,
+            "execute_postquery": false,
+            "alias_column_names": true,
+            "alias_query": {
+                "Country Code (5)": "country_code_five_chars",
+                "Country Code (3)": "country_code_three_chars",
+                "Country Name": "country_name"
+            },
+            "prequery": [],
+            "postquery": []
+        }
+    ]
+}

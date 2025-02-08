@@ -1,5 +1,5 @@
 from pyspark import SparkConf
-from jsonmanipulations.configparametervalue import ConfigParametersValue as CPV
+from jsonmanipulations.configparametervalue import ConfigurationParametersValue as CPV
 
 class SparkConf () :
     def __init__ (self,) :

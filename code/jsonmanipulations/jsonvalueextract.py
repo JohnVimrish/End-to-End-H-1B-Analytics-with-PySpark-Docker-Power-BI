@@ -1,6 +1,7 @@
 from datetime import datetime as dt
 import json as js
 import configparser
+from root.commonvariables import CommonVariables as common_var
 
 
 class JsonManupulatorNModifier():
@@ -19,7 +20,7 @@ class JsonManupulatorNModifier():
             print('Error :', excep)
 
 
-    def json_val(self, json_key_path, seperator='--'):
+    def json_val(self, json_key_path, seperator=common_var.json_value_separator):
         return self.json_value_extractor(json_key_path, seperator)
 
     def json_value_extractor(self, json_key_path, seperator):
