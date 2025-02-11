@@ -1,7 +1,6 @@
 from database.postgresconnector import PostgresConnection
 from core.spark_utilities import spark_utilities
 from utility.pandas_utilities import Pandas_Utilities
-
 from jsonmanipulations.configparametervalue import ConfigurationParametersValue as CPV
 from jsonmanipulations.jsontagvariables import JsonTagVariables as JsonTV
 from root.commonvariables import CommonVariables as common_var
@@ -10,7 +9,7 @@ import traceback
 import typing as t
 
 class ETLJob:
-    def __init__(self, spark_obj:spark_utilities, db_obj:PostgresConnection, table_properties:dict, table_name ):
+    def __init__(self, spark_obj:spark_utilities, db_obj:PostgresConnection, table_properties:dict, table_name):
         self.table_name  = table_name 
         self.spark_util_obj = spark_obj
         self.db_obj = db_obj
@@ -45,11 +44,11 @@ class ETLJob:
 
                     for csv_file in self.table_properties[JsonTV.dwh_tables_config_csv_input]:
                         if 'spark_dataframe' in locals()  :
-                            spark_dataframe = spark_dataframe.union(__process_inputs(csv_file))
+                            spark_dataframe = spark_dataframe.union(__process_inputs(CPV.tables_input_folder_location+"/"+csv_file))
                         else:
-                            spark_dataframe = __process_inputs(csv_file)
+                            spark_dataframe = __process_inputs(CPV.tables_input_folder_location+"/"+csv_file)
                 else:
-                    spark_dataframe = self.spark_util_obj.func_csv_dataframe(self.table_properties[JsonTV.dwh_tables_config_csv_input])
+                    spark_dataframe =  __process_inputs(CPV.tables_input_folder_location+"/"+self.table_properties[JsonTV.dwh_tables_config_csv_input])
                 spark_dataframe = self.spark_util_obj.func_repartion_dataframe(spark_dataframe, CPV.repartition_spark_dft)
                 self.spark_util_obj.func_cache_dft_data(spark_dataframe, CPV.memory_cache)
                 if self.table_properties[JsonTV.dwh_tables_config_alias_query] :
@@ -71,7 +70,7 @@ class ETLJob:
             db_obj.copy_command_executor(__extract_copy_command(dft_renamed,table_name),self.pandas_util.convert_to_inmemory_csv_obj(dft_renamed))
 
         try :
-            excel_input   = self.table_properties[JsonTV.dwh_tables_config_xlsx_input]
+            excel_input   = CPV.tables_input_folder_location+"/"+self.table_properties[JsonTV.dwh_tables_config_xlsx_input]
             excel_use_cols = self.table_properties[JsonTV.dwh_tables_config_xlsx_input_usecols]
             sheet_name = self.table_properties[JsonTV.dwh_tables_config_xlsx_input_sheet]
 

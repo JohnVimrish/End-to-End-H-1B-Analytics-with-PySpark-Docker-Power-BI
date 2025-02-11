@@ -1,5 +1,6 @@
 from jsonmanipulations.configparametervalue import ConfigurationParametersValue as CPV
 from core.spark_utilities import spark_utilities
+from core.threadexecutor import ThreadExecution as THE
 from core.spark_configuration import SparkConfiguration
 from database.postgresconnector import PostgresConnection
 import sys
@@ -11,11 +12,11 @@ class trigger_pipeline:
         self.pipeline_name = pipeline_name
         self.PostgresObj  = PostgresConnection()
         self.spark_config_obj = SparkConfiguration()
-        self.spark_util_obj = spark_utilities(self.spark_config_obj.fetch_spark_congiration_obj())
+        self.spark_util_obj = spark_utilities(CPV.dwh_tables_config_target_tables_groups,self.spark_config_obj.fetch_spark_congiration_obj())
 
     def constructing_job_activities  (self,) :
-         print(self.spark_util_obj.SparkSession_init)
-
+        thread_executor_obj  = THE(self.PostgresObj,self.spark_util_obj) 
+        thread_executor_obj.process_etl(CPV.writing_to_db_no_of_pp)
     def stop_pipeline (self,) :
        self.PostgresObj.close_connection_pool()
        self.PostgresObj.close_connection_pool()
@@ -25,7 +26,7 @@ class trigger_pipeline:
         try:
             self.constructing_job_activities()
         except Exception as e:
-            self.handle_pipeline_exception("start_pipeline", e)
+            self.handle_pipeline_exception(self.start_pipeline().__name__, e)
 
     def handle_pipeline_exception(self, func_name, exception):
         ex_type, ex_value, ex_traceback = sys.exc_info()
