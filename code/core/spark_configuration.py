@@ -1,7 +1,7 @@
 from pyspark import SparkConf
 from jsonmanipulations.configparametervalue import ConfigurationParametersValue as CPV
 
-class SparkConf () :
+class SparkConfiguration () :
     def __init__ (self,) :
         self.sparkconfiguration  = SparkConf()
 
@@ -23,7 +23,7 @@ class SparkConf () :
             self.sparkconfiguration.set("spark.kryo.registrationRequired",CPV.sp_conf_kryo_registration)  
             self.sparkconfiguration.set("spark.kryo.classesToRegister", CPV.sp_conf_task_kryo_classes_to_register)  
             self.sparkconfiguration.set("spark.eventLog.enabled", CPV.sp_conf_eventlog_enabled)           
-            self.sparkconfiguration.set("spark.eventLog.dir", CPV.sp_conf_history_fs_logdirectory)  
+            self.sparkconfiguration.set("spark.eventLog.dir", CPV.sp_conf_eventlog_dir)  
             self.sparkconfiguration.set("spark.history.fs.logDirectory",CPV.sp_conf_history_fs_logdirectory)  
             self.sparkconfiguration.set("spark.jars", CPV.postgres_jdbc_loc)
 

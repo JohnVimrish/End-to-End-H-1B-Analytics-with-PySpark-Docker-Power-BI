@@ -18,7 +18,6 @@ class spark_utilities () :
     def func_repartion_dataframe(self,dataframe, repartion_count) :
         return dataframe.repartition(repartion_count)
     
-    
     def func_explode_based_on_one_key (self,input_dataframe,explode_key:str , alias_of_column :str)  :
         return  input_dataframe.select(F.explode(F.col(explode_key)).alias(alias_of_column))
     
@@ -35,7 +34,6 @@ class spark_utilities () :
     def func_stop_spark (self,) :
             self.SparkSession_init.stop()
     
-
     def func_remane_column_names (self,dataframe) :
         return  dataframe.select([F.col(c).alias(c.replace('.', '_')) for c in dataframe.columns])
     
@@ -59,7 +57,7 @@ class spark_utilities () :
               self.func_initiate_spark_read()
               return func()
         except (AnalysisException, PySparkException) as e:
-            self.handle_spark_exception(func, e)
+            self.handle_spark_exception(func.__name__, e)
 
     def func_limit_rows_dataframe (self,dataframe, limit_row_count) :
         return dataframe. limit(limit_row_count)
@@ -68,10 +66,13 @@ class spark_utilities () :
             return dataframe.count()
     
     def func_read_parquet_file(self,file_path) :
-        return self.func_initiate_spark_read().parquet(file_path)
+        return self.read_func.parquet(file_path)
     
     def func_json_dataframe (self,input_file:str) :
-        return  self.func_initiate_spark_read().json(input_file)
+        return  self.read_func.json(input_file)
+    
+    def func_csv_dataframe (self,input_file:str) :
+        return  self.read_func.csv(input_file)
     
     def func_write_data_to_parquet (self,file_path, dataframe,write_mode) :
         dataframe.write.parquet(file_path,mode=write_mode)
@@ -79,7 +80,7 @@ class spark_utilities () :
     def func_re_alias_column_names_with_query (self,dataframe,query:str) :
         return dataframe.selectExpr(query)
 
-    def func_execlude_columns_from_dft(self,dataframe,exclude_columns:list) :
+    def func_exclude_columns_from_dft(self,dataframe,exclude_columns:list) :
           selected_columns = [col for col in dataframe.columns if col not in exclude_columns]
           df_selected = dataframe.select(*selected_columns)
           return df_selected
@@ -87,6 +88,10 @@ class spark_utilities () :
     def write_spark_dft_to_db (self,dataframe,db_url:str,db_properties:dict,table_name:str,mode:str,driver) :
         dataframe.write.option(common_var.driver_attribute, driver).jdbc(url=db_url, table=table_name, properties=db_properties,mode = mode).save()
     
-    def handle_spark_exception(self, func, e) :
-        error_message = f"Error in function {func.__name__}: {str(e)}"
+    def handle_spark_exception(self, func_name , e) :
+        error_message = f"Error in function {func_name}: {str(e)}"
         raise RuntimeError(error_message) from e
+    
+
+    def func_stop_sparksession(self) :
+        self.SparkSession_init.stop()

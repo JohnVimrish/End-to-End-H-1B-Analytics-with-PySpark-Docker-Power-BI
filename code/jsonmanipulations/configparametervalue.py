@@ -12,6 +12,7 @@ class ConfigurationParametersValue():
         cls.files_to_process  = main_config_obj.json_val(JsonTV.files_to_process)
         cls.writing_to_db_no_of_pp  = main_config_obj.json_val(JsonTV.writing_to_db_no_of_pp)
         cls.memory_cache = main_config_obj.json_val(JsonTV.memory_cache)
+        cls.pipeline_name  = main_config_obj.json_val(JsonTV.pipeline_name)
         cls.rmv_sprk_dft_col_starging_with  = main_config_obj.json_val(JsonTV.rmv_sprk_dft_col_starging_with)
         cls.tables_input_folder_location  = main_config_obj.json_val(JsonTV.tables_input_folder_location)
         cls.target_db  = JsonTV.target_db
@@ -43,5 +44,9 @@ class ConfigurationParametersValue():
         cls.sp_conf_history_fs_logdirectory    = spark_config_obj.json_val(JsonTV.sp_conf_history_fs_logdirectory  )
         cls.sp_conf_memory_caching  = spark_config_obj.json_val(JsonTV.sp_conf_memory_caching)
         cls.sp_conf_memory_offheap_enabled  = spark_config_obj.json_val(JsonTV.sp_conf_memory_offheap_enabled)
+        cls.sp_conf_eventlog_dir = spark_config_obj.json_val(JsonTV.sp_conf_eventlog_dir)
         cls.dwh_tables_config_write_mode = toprocess_tables_config_obj.json_val(JsonTV.dwh_tables_config_write_mode)
         cls.dwh_tables_config_target_tables_groups =   toprocess_tables_config_obj.json_val(JsonTV.dwh_tables_config_target_tables_groups)
+        cls.target_db_url = "jdbc:postgresql://{}:{}/{}".format(cls.target_db_host, cls.target_db_port, cls.target_db_dbname)
+        cls.target_db_properties = {"user": cls.target_db_user,"password": cls.target_db_password}
+        cls.repartition_spark_dft = main_config_obj.json_val(JsonTV.repartition_spark_dft)

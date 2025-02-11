@@ -6,7 +6,8 @@ from root.commonvariables import CommonVariables
 from jsonmanipulations.configparametervalue import ConfigurationParametersValue as CPV
 from jsonmanipulations.jsontagvariables import JsonTagVariables as JsonTagVar
 from jsonmanipulations.jsonvalueextract import JsonManupulatorNModifier as JsonMNM
-from database.postgresconnector import PostgresConnection
+from core.trigger_pipeline import trigger_pipeline
+
 
 
 
@@ -22,12 +23,9 @@ def main_function():
         start_time = dt.now()
         print('ETL Start Time : {} .'.format(start_time))
         print('ETL Process Started.')
-        PostgresObj  = PostgresConnection()
-        PostgresObj.acquire_connection()
-        PostgresObj.execute_sql("Select * from information_schema.tables", "No Log Message")
-        print (PostgresObj.get_full_write_records())
-        PostgresObj.release_connection()
-        PostgresObj.close_connection_pool()
+        pipeline_obj = trigger_pipeline(CPV.pipeline_name)
+        pipeline_obj.start_pipeline()
+        pipeline_obj.stop_pipeline()
         end_time = dt.now()
         print('ETL Process Completed.')
         print('ETL End Time : {} .'.format(end_time))

@@ -58,6 +58,11 @@ class PostgresConnection():
 
     def cursor_status(self):
         return self.cursor_object.closed
+    
+    def copy_command_executor (self, query, input_data) :
+        with self.cursor_object.copy(statement =query) as copy:
+            copy.write(input_data.getvalue())
+        self.new_connection.commit()
 
     def release_connection(self):
         try:
