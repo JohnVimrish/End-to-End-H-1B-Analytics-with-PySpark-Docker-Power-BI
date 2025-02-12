@@ -25,7 +25,7 @@ class ThreadExecution () :
 
     def process_etl(    self, 
                         max_threads_num):
-            
+        print (max_threads_num)
         try :
             with ThreadPoolExecutor(max_workers = max_threads_num, 
                                     thread_name_prefix = self.thread_name) as executor:
@@ -41,5 +41,6 @@ class ThreadExecution () :
                         thread_output= future_output.result()                            
                     except Exception as exc:
                          raise (f'Thread enabling exception: {exc}')
+                    quit()
         except  Exception as error  :
              raise error 

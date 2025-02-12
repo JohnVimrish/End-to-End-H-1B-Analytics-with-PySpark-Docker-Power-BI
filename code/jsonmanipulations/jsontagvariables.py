@@ -4,10 +4,10 @@ class JsonTagVariables ():
            
            cls.postgres_jdbc_loc = "postgres_jdbc_driver_location"
            cls.files_to_process = "etl_tables_folder_location"
-           cls.writing_to_db_no_of_pp = "no_parallel_processing_writing_to_tables"
+           cls.writing_to_db_no_of_pp = "no_parallel_procesing_wrtiting_to_tables"
            cls.memory_cache = "memory-caching"
            cls.pipeline_name = "pipeline_name"
-           cls.repartition_spark_dft = "repartition_spark_dataframe" 
+           cls.repartition_spark_dft = "repartition_spark_dft" 
            cls.rmv_sprk_dft_col_starging_with  = "remove_spark_columns_starting_with"
            cls.tables_input_folder_location  = "tables_input_folder_location" 
            cls.target_db = "my_target_database"
@@ -58,3 +58,4 @@ class JsonTagVariables ():
            cls.dwh_tables_config_xlsx_input = "excel_input"
            cls.dwh_tables_config_xlsx_input_usecols = "usecols"
            cls.dwh_tables_config_xlsx_input_table_mapping = "table_mapping"
+           cls.dwh_tables_config_use_dtype_of = "use_dtype_of"

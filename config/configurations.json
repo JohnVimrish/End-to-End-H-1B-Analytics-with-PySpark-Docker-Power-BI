@@ -1,7 +1,7 @@
 {
 "postgres_jdbc_driver_location" :"/opt/spark-3.4.4-bin-hadoop3/jars/postgresql-42.7.5.jar",
 "etl_tables_folder_location": "/root/docker_dataset/h1b_data",
-"no_parallel_procesing_wrtiting_to_tables" : "4",
+"no_parallel_procesing_wrtiting_to_tables" : 1,
 "memory-caching" : "M&D", 
 "remove_spark_columns_starting_with" :"_c",
 "tables_input_folder_location" : "/root/docker_dataset/h1b_data", 

@@ -14,7 +14,7 @@
         "memory-fraction": "0.8",
         "memory-storagefraction": "0.5",
         "serializer": "org.apache.spark.serializer.KryoSerializer",
-        "kryo-registration": "true",
+        "kryo-registration": "false",
         "kryo-classes_to_register": "org.apache.spark.sql.Row",
         "eventlog_enabled": "true",
         "eventlog_dir": "/root/spark_log/spark-events/",

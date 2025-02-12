@@ -9,7 +9,7 @@ import traceback
 
 class ETLJob:
     def __init__(self, spark_obj:spark_utilities, db_obj:PostgresConnection, table_properties:dict, table_name):
-        self.table_name  = table_name 
+        self.table_name  = table_name
         self.spark_util_obj = spark_obj
         self.db_obj = db_obj
         self.pandas_util = Pandas_Utilities()
@@ -35,10 +35,10 @@ class ETLJob:
                 return self.spark_util_obj.func_csv_dataframe(csv_file)
 
             try  :
-                self.spark_util_obj.func_set_read_options(common_var.inferschema)
+                self.spark_util_obj.func_set_read_options(common_var.inferschema,False)
                 self.spark_util_obj.func_set_read_options(common_var.header)
                 
-                if self.table_properties[JsonTV.dwh_tables_config_multiple_table_present]:
+                if self.table_properties[JsonTV.dwh_tables_config_multiple_table_input_present]:
 
                     for csv_file in self.table_properties[JsonTV.dwh_tables_config_csv_input]:
                         if 'spark_dataframe' in locals()  :
@@ -49,10 +49,9 @@ class ETLJob:
                     spark_dataframe =  __process_inputs(CPV.tables_input_folder_location+"/"+self.table_properties[JsonTV.dwh_tables_config_csv_input])
                 spark_dataframe = self.spark_util_obj.func_repartion_dataframe(spark_dataframe, CPV.repartition_spark_dft)
                 self.spark_util_obj.func_cache_dft_data(spark_dataframe, CPV.memory_cache)
-                if self.table_properties[JsonTV.dwh_tables_config_alias_query] :
-                    spark_dataframe = self.spark_util_obj.func_re_alias_column_names_with_query(spark_dataframe,self.table_properties[JsonTV.dwh_tables_config_alias_query])
-                spark_dataframe_altered  = self.spark_util_obj.func_exclude_columns_from_dft(spark_dataframe,CPV.rmv_sprk_dft_col_starging_with)
-                self.spark_util_obj.write_spark_dft_to_db(spark_dataframe_altered,CPV.target_db_url,CPV.target_db_properties,self.table_name, self.table_properties[JsonTV.dwh_tables_config_write_mode], CPV.target_db_driver)
+                spark_dataframe_dtype = self.spark_util_obj.func_rearrange_based_onuser_based_dtype(spark_dataframe,self.table_properties[JsonTV.dwh_tables_config_use_dtype_of])
+                spark_dataframe_altered  = self.spark_util_obj.func_exclude_columns_from_dft(spark_dataframe_dtype,CPV.rmv_sprk_dft_col_starging_with)
+                self.spark_util_obj.write_spark_dft_to_db(spark_dataframe_altered,CPV.target_db_url,CPV.target_db_properties,self.table_name, CPV.dwh_tables_config_write_mode, CPV.target_db_driver)
             
             except Exception as e:
                  self.spark_util_obj.handle_spark_exception("Process THrough Spark",e)
@@ -90,7 +89,7 @@ class ETLJob:
     def process_etl(self,):
         
         try:
-            
+            print(self.table_name ) 
             self.db_connection, self.db_cursor  = self.db_obj.acquire_connection()
             # Execute prequeries if specified
             if  self.table_properties[JsonTV.dwh_tables_config_execute_prequery] :

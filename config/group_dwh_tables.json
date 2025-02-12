@@ -19,6 +19,7 @@
             "execute_prequery": true,
             "execute_postquery": true,
             "alias_column_names": false,
+            "use_dtype_of": "cast ( employer_poc_phone as string ) as employer_poc_phone,cast ( new_employment as Long ) as new_employment,cast ( continued_employment as Long ) as continued_employment,cast ( agent_attorney_phone as decimal ) as agent_attorney_phone,cast ( agent_attorney_phone_ext as decimal ) as agent_attorney_phone_ext,cast ( change_previous_employment as Long ) as change_previous_employment,cast ( pw_other_year as decimal ) as pw_other_year,cast ( new_concurrent_employment as Long ) as new_concurrent_employment,cast ( employer_poc_phone_ext as decimal ) as employer_poc_phone_ext,cast ( total_worksite_locations as decimal ) as total_worksite_locations,cast ( employer_phone_ext as decimal ) as employer_phone_ext,cast ( worksite_workers as decimal ) as worksite_workers,cast ( naics_code as Long ) as naics_code,cast ( change_employer as Long ) as change_employer,cast ( amended_petition as Long ) as amended_petition,cast ( original_cert_date as date ) as original_cert_date,cast ( received_date as date ) as received_date,cast ( decision_date as date ) as decision_date,cast ( begin_date as date ) as begin_date,cast ( end_date as date ) as end_date,cast ( wage_rate_of_pay_from as decimal ) as wage_rate_of_pay_from,cast ( wage_rate_of_pay_to as decimal ) as wage_rate_of_pay_to,cast ( total_worker_positions as Long ) as total_worker_positions,cast ( employer_poc_email as string ) as employer_poc_email,cast ( agent_representing_employer as string ) as agent_representing_employer,cast ( agent_attorney_last_name as string ) as agent_attorney_last_name,cast ( agent_attorney_first_name as string ) as agent_attorney_first_name,cast ( agent_attorney_middle_name as string ) as agent_attorney_middle_name,cast ( agent_attorney_address1 as string ) as agent_attorney_address1,cast ( agent_attorney_address2 as string ) as agent_attorney_address2,cast ( agent_attorney_city as string ) as agent_attorney_city,cast ( agent_attorney_state as string ) as agent_attorney_state,cast ( agent_attorney_postal_code as string ) as agent_attorney_postal_code,cast ( agent_attorney_country as string ) as agent_attorney_country,cast ( agent_attorney_province as string ) as agent_attorney_province,cast ( agent_attorney_email_address as string ) as agent_attorney_email_address,cast ( lawfirm_name_business_name as string ) as lawfirm_name_business_name,cast ( state_of_highest_court as string ) as state_of_highest_court,cast ( name_of_highest_state_court as string ) as name_of_highest_state_court,cast ( secondary_entity as string ) as secondary_entity,cast ( secondary_entity_business_name as string ) as secondary_entity_business_name,cast ( worksite_address1 as string ) as worksite_address1,cast ( worksite_address2 as string ) as worksite_address2,cast ( worksite_city as string ) as worksite_city,cast ( worksite_county as string ) as worksite_county,cast ( worksite_state as string ) as worksite_state,cast ( worksite_postal_code as string ) as worksite_postal_code,cast ( wage_unit_of_pay as string ) as wage_unit_of_pay,cast ( pw_unit_of_pay as string ) as pw_unit_of_pay,cast ( pw_tracking_number as string ) as pw_tracking_number,cast ( pw_wage_level as string ) as pw_wage_level,cast ( pw_oes_year as string ) as pw_oes_year,cast ( pw_other_source as string ) as pw_other_source,cast ( pw_survey_publisher as string ) as pw_survey_publisher,cast ( pw_survey_name as string ) as pw_survey_name,cast ( agree_to_lc_statement as string ) as agree_to_lc_statement,cast ( h_1b_dependent as string ) as h_1b_dependent,cast ( willful_violator as string ) as willful_violator,cast ( support_h1b as string ) as support_h1b,cast ( statutory_basis as string ) as statutory_basis,cast ( appendix_a_attached as string ) as appendix_a_attached,cast ( public_disclosure as string ) as public_disclosure,cast ( preparer_last_name as string ) as preparer_last_name,cast ( preparer_first_name as string ) as preparer_first_name,cast ( preparer_middle_initial as string ) as preparer_middle_initial,cast ( preparer_business_name as string ) as preparer_business_name,cast ( preparer_email as string ) as preparer_email,cast ( case_number as string ) as case_number,cast ( case_status as string ) as case_status,cast ( visa_class as string ) as visa_class,cast ( job_title as string ) as job_title,cast ( soc_code as string ) as soc_code,cast ( soc_title as string ) as soc_title,cast ( full_time_position as string ) as full_time_position,cast ( employer_name as string ) as employer_name,cast ( trade_name_dba as string ) as trade_name_dba,cast ( employer_address1 as string ) as employer_address1,cast ( employer_address2 as string ) as employer_address2,cast ( employer_city as string ) as employer_city,cast ( employer_state as string ) as employer_state,cast ( employer_postal_code as string ) as employer_postal_code,cast ( employer_country as string ) as employer_country,cast ( employer_province as string ) as employer_province,cast ( employer_phone as string ) as employer_phone,cast ( employer_poc_last_name as string ) as employer_poc_last_name,cast ( employer_poc_first_name as string ) as employer_poc_first_name,cast ( employer_poc_middle_name as string ) as employer_poc_middle_name,cast ( employer_poc_job_title as string ) as employer_poc_job_title,cast ( employer_poc_address1 as string ) as employer_poc_address1,cast ( employer_poc_address2 as string ) as employer_poc_address2,cast ( employer_poc_city as string ) as employer_poc_city,cast ( employer_poc_state as string ) as employer_poc_state,cast ( employer_poc_postal_code as string ) as employer_poc_postal_code,cast ( employer_poc_country as string ) as employer_poc_country,cast ( employer_poc_province as string ) as employer_poc_province,cast ( prevailing_wage as decimal ) as prevailing_wage",
             "alias_query": "",
             "prequery": [
                 " truncate table h1b_analysis_stg.stg_lca_disclosure_data;" 
@@ -31,7 +32,6 @@
             "input_type": "csv",
             "use_dft_of" : "spark",
             "csv_input": [
-                "h1b15.csv",
                 "h1b16.csv",
                 "h1b17.csv",
                 "h1b18.csv"
@@ -44,6 +44,7 @@
             "execute_prequery": true,
             "execute_postquery": true,
             "alias_column_names": false,
+            "use_dtype_of": "cast ( employer_state as string ) as employer_state,cast ( employer_postal_code as string ) as employer_postal_code,cast ( employer_country as string ) as employer_country,cast ( employer_province as string ) as employer_province,cast ( employer_phone_ext as string ) as employer_phone_ext,cast ( agent_representing_employer as string ) as agent_representing_employer,cast ( agent_attorney_name as string ) as agent_attorney_name,cast ( agent_attorney_city as string ) as agent_attorney_city,cast ( agent_attorney_state as string ) as agent_attorney_state,cast ( job_title as string ) as job_title,cast ( soc_code as string ) as soc_code,cast ( wage_rate_of_pay_from as decimal ) as wage_rate_of_pay_from,cast ( full_time_position as string ) as full_time_position,cast ( pw_unit_of_pay as string ) as pw_unit_of_pay,cast ( pw_wage_level as string ) as pw_wage_level,cast ( pw_source as string ) as pw_source,cast ( pw_source_other as string ) as pw_source_other,cast ( wage_unit_of_pay as string ) as wage_unit_of_pay,cast ( h1b_dependent as string ) as h1b_dependent,cast ( willful_violator as string ) as willful_violator,cast ( support_h1b as string ) as support_h1b,cast ( labor_con_agree as string ) as labor_con_agree,cast ( public_disclosure_location as string ) as public_disclosure_location,cast ( worksite_city as string ) as worksite_city,cast ( worksite_county as string ) as worksite_county,cast ( worksite_state as string ) as worksite_state,cast ( worksite_postal_code as string ) as worksite_postal_code,cast ( soc_name as string ) as soc_name,cast ( wage_rate_of_pay_to as decimal ) as wage_rate_of_pay_to,cast ( case_number as string ) as case_number,cast ( case_status as string ) as case_status,cast ( visa_class as string ) as visa_class,cast ( employer_name as string ) as employer_name,cast ( employer_business_dba as string ) as employer_business_dba,cast ( employer_address as string ) as employer_address,cast ( employer_city as string ) as employer_city,cast ( employer_phone as Long ) as employer_phone,cast ( naics_code as Long ) as naics_code,cast ( total_workers as Long ) as total_workers,cast ( new_employment as Long ) as new_employment,cast ( continued_employment as Long ) as continued_employment,cast ( change_previous_employment as Long ) as change_previous_employment,cast ( new_concurrent_employment as Long ) as new_concurrent_employment,cast ( change_employer as Long ) as change_employer,cast ( amended_petition as Long ) as amended_petition,cast ( original_cert_date as date ) as original_cert_date,cast ( prevailing_wage as decimal ) as prevailing_wage,cast ( decision_date as date ) as decision_date,cast ( case_submitted as date ) as case_submitted,cast ( employment_start_date as date ) as employment_start_date,cast ( pw_source_year as decimal ) as pw_source_year,cast ( employment_end_date as date ) as employment_end_date",
             "alias_query": "",
             "prequery": [
                 " truncate table h1b_analysis_stg.stg_h1b_data;" 
@@ -64,6 +65,7 @@
             "execute_prequery": true,
             "execute_postquery": true,
             "alias_column_names": false,
+            "use_dtype_of": "cast ( worksite as string ) as worksite,cast ( full_time_position as string ) as full_time_position,cast ( job_title as string ) as job_title,cast ( soc_name as string ) as soc_name,cast ( employer_name as string ) as employer_name,cast ( case_status as string ) as case_status,cast ( prevailing_wage as decimal ) as prevailing_wage,cast ( YEAR as Long ) as YEAR,cast ( lat as string ) as lat,cast ( lon as string ) as lon",
             "alias_query": "",
             "prequery": [
                 "truncate table h1b_analysis_stg.stg_h1b_data_second;" 
@@ -84,6 +86,7 @@
             "execute_prequery": true,
             "execute_postquery": true,
             "alias_column_names": false,
+            "use_dtype_of": "cast ( prevailing_wage as decimal ) as prevailing_wage,cast ( employer_name as string ) as employer_name,cast ( soc_name as string ) as soc_name,cast ( soc_code as string ) as soc_code,cast ( job_title as string ) as job_title,cast ( full_time_position as string ) as full_time_position,cast ( worksite_city as string ) as worksite_city,cast ( worksite_state_abb as string ) as worksite_state_abb,cast ( worksite_state_full as string ) as worksite_state_full,cast ( worksite as string ) as worksite,cast ( YEAR as Long ) as YEAR,cast ( case_number as string ) as case_number,cast ( case_status as string ) as case_status",
             "alias_query": "",
             "prequery": [
                 " truncate table h1b_analysis_stg.stg_h1b_disclosure_data;" 
@@ -110,12 +113,104 @@
             "execute_prequery": true,
             "execute_postquery": true,
             "alias_column_names": false,
+            "use_dtype_of": "cast ( valid_to as string ) as valid_to,cast ( num_of_emp_in_us as string ) as num_of_emp_in_us,cast ( s1q1a as string ) as s1q1a,cast ( s1q1b as string ) as s1q1b,cast ( ben_education_code as string ) as ben_education_code,cast ( ed_level_definition as string ) as ed_level_definition,cast ( ben_pfield_of_study as string ) as ben_pfield_of_study,cast ( ben_comp_paid as string ) as ben_comp_paid,cast ( dot_code as string ) as dot_code,cast ( naics_code as string ) as naics_code,cast ( s3q1 as string ) as s3q1,cast ( s4q1 as string ) as s4q1,cast ( zip as string ) as zip,cast ( t_u_vawa_flag as string ) as t_u_vawa_flag,cast ( state as string ) as state,cast ( city as string ) as city,cast ( mail_addr as string ) as mail_addr,cast ( wage_amt as string ) as wage_amt,cast ( valid_from as string ) as valid_from,cast ( full_time_ind as string ) as full_time_ind,cast ( wage_unit as string ) as wage_unit,cast ( fein as string ) as fein,cast ( employer_name as string ) as employer_name,cast ( gender as string ) as gender,cast ( ben_year_of_birth as string ) as ben_year_of_birth,cast ( ben_date_of_birth as string ) as ben_date_of_birth,cast ( country_of_nationality as string ) as country_of_nationality,cast ( country_of_birth as string ) as country_of_birth,cast ( bcn as string ) as bcn,cast ( agent_first_name as string ) as agent_first_name,cast ( agent_last_name as string ) as agent_last_name,cast ( lottery_year as string ) as lottery_year,cast ( status_type as string ) as status_type,cast ( ben_multi_reg_ind as string ) as ben_multi_reg_ind,cast ( receipt_number as string ) as receipt_number,cast ( rec_date as string ) as rec_date,cast ( first_decision as string ) as first_decision,cast ( first_decision_date as string ) as first_decision_date,cast ( i129_employer_name as string ) as i129_employer_name,cast ( pet_street as string ) as pet_street,cast ( pet_city as string ) as pet_city,cast ( pet_state as string ) as pet_state,cast ( pet_zip as string ) as pet_zip,cast ( requested_class as string ) as requested_class,cast ( basis_for_classification as string ) as basis_for_classification,cast ( requested_action as string ) as requested_action,cast ( number_of_beneficiaries as string ) as number_of_beneficiaries,cast ( ben_sex as string ) as ben_sex,cast ( ben_country_of_birth as string ) as ben_country_of_birth,cast ( ben_current_class as string ) as ben_current_class,cast ( job_title as string ) as job_title,cast ( dol_eta_case_number as string ) as dol_eta_case_number,cast ( worksite_street as string ) as worksite_street,cast ( worksite_city as string ) as worksite_city,cast ( worksite_state as string ) as worksite_state,cast ( worksite_zip as string ) as worksite_zip",
             "alias_query": "",
             "prequery": [
                 " truncate table h1b_analysis_stg.stg_trk_disclosure_data;" 
             ],
             "postquery": [
             ]
+        },
+        {
+            "input_type": "excel",
+            "use_dft_of" : "pandas",
+            "sheet": "Data Dictionary",
+            "excel_input": "TRK_13139_I129_H1B_Registrations_FY21_FY24_FOIA_FIN.xlsx",
+            "multiple_table_present": true,
+            "multiple_table_input_present": false,
+            "usecols": "A:B",
+            "table_mapping": {
+                "h1b_analysis_stg.stg_trk_metadata": "Lookup Table for TRK_Metadata",
+                "h1b_analysis_stg.stg_class_preference": "Lookup Table for Class_Preference",
+                "h1b_analysis_stg.stg_basis_for_classification": "Lookup Table for Basis for Classification",
+                "h1b_analysis_stg.stg_requested_action": "Lookup Table for Requested Action",
+                "h1b_analysis_stg.stg_ben_education_code": "Lookup Table for Ben Education Code"
+            },
+            "execute_prequery": false,
+            "execute_postquery": false,
+            "alias_column_names": true,
+            "alias_query": {
+                "h1b_analysis_stg.stg_trk_metadata": {
+                    "Type": "lookup_code",	
+                    "Description": "description"
+                },
+                "h1b_analysis_stg.stg_class_preference": {
+                    "Class_Preference": "class_preference",
+                    "Code Description": "code_description"
+                },
+                "h1b_analysis_stg.stg_basis_for_classification": {
+                    "Basis_for_Classification": "basis_of_classification",
+                    "Code Description": "code_description"
+                },
+                "h1b_analysis_stg.stg_requested_action": {
+                    "Requested_Action": "requested_action",
+                    "Code Description": "code_description"
+                },
+                "h1b_analysis_stg.stg_ben_education_code": {
+                    "Ben_Education_Code": "ben_education_code",
+                    "Code Description": "code_description"
+                }
+            },
+            "prequery": [" truncate table h1b_analysis_stg.stg_trk_metadata;" ,
+    " truncate table h1b_analysis_stg.stg_basis_for_classification;", 
+    " truncate table h1b_analysis_stg.stg_requested_action;" ,
+    " truncate table h1b_analysis_stg.stg_ben_education_code;" ,
+    " truncate table h1b_analysis_stg.stg_class_preference;" ],
+            "postquery": []
+        },
+        {
+            "input_type": "excel",
+            "use_dft_of" : "pandas",
+            "sheet": "I-129 H1B Job Codes",
+            "excel_input": "TRK_13139_I129_H1B_Registrations_FY21_FY24_FOIA_FIN.xlsx",
+            "multiple_table_present": false,
+            "multiple_table_input_present": false,
+            "usecols": "A:C",
+            "table_mapping": {
+                "h1b_analysis_stg.stg_job_codes": "I-129 H1B Job Code"
+            },
+            "execute_prequery": false,
+            "execute_postquery": false,
+            "alias_column_names": true,
+            "alias_query": {
+                "Occupation Category": "occupation_category",
+                "Occupation Code": "occupation_code",
+                "Occupation Description": "occupation_description"
+            },
+            "prequery": [" truncate table h1b_analysis_stg.stg_job_codes;" ],
+            "postquery": []
+        },
+        {
+            "input_type": "excel",
+            "use_dft_of" : "pandas",
+            "sheet": "Country Codes",
+            "excel_input": "TRK_13139_I129_H1B_Registrations_FY21_FY24_FOIA_FIN.xlsx",
+            "multiple_table_present": false,
+            "multiple_table_input_present": false,
+            "usecols": "A:C",
+            "table_mapping": {
+                "h1b_analysis_stg.stg_country_code": "Country Codes"
+            },
+            "execute_prequery": false,
+            "execute_postquery": false,
+            "alias_column_names": true,
+            "alias_query": {
+                "Country Code (5)": "country_code_five_chars",
+                "Country Code (3)": "country_code_three_chars",
+                "Country Name": "country_name"
+            },
+            "prequery": [" truncate table h1b_analysis_stg.stg_country_code;" ],
+            "postquery": []
         }
     ]
 }

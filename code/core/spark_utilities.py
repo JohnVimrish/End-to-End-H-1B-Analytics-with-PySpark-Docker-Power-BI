@@ -17,6 +17,7 @@ class spark_utilities () :
         dataframe.persist(self.storage_mode)
     
     def func_repartion_dataframe(self,dataframe, repartion_count) :
+        print(repartion_count)
         return dataframe.repartition(repartion_count)
     
     def func_explode_based_on_one_key (self,input_dataframe,explode_key:str , alias_of_column :str)  :
@@ -39,7 +40,7 @@ class spark_utilities () :
         return  dataframe.select([F.col(c).alias(c.replace('.', '_')) for c in dataframe.columns])
     
     def func_initiate_spark_read  (self) :
-      self.read_func = self.SparkSession_init.read()
+      self.read_func = self.SparkSession_init.read
 
     def func_set_infer_schema(self, infer_schema=True):
         self.read_func = self.read_func.option(common_var.inferschema, str(infer_schema).lower())
@@ -81,8 +82,9 @@ class spark_utilities () :
     def func_write_data_to_parquet (self,file_path, dataframe,write_mode) :
         dataframe.write.parquet(file_path,mode=write_mode)
     
-    def func_re_alias_column_names_with_query (self,dataframe,query:str) :
-        return dataframe.selectExpr(query)
+    def func_rearrange_based_onuser_based_dtype (self,dataframe,query:str) :
+        formatted_data_type = [f'{item.strip()}' for item in query.split(',')]
+        return dataframe.selectExpr(formatted_data_type)
 
     def func_exclude_columns_from_dft(self,dataframe,exclude_columns:list) :
           selected_columns = [col for col in dataframe.columns if col not in exclude_columns]
@@ -90,7 +92,7 @@ class spark_utilities () :
           return df_selected
     
     def write_spark_dft_to_db (self,dataframe,db_url:str,db_properties:dict,table_name:str,mode:str,driver) :
-        dataframe.write.option(common_var.driver_attribute, driver).jdbc(url=db_url, table=table_name, properties=db_properties,mode = mode).save()
+        dataframe.write.option(common_var.driver_attribute, driver).jdbc(url=db_url, table=table_name, properties=db_properties,mode =mode).save()
     
     def handle_spark_exception(self, func_name , e) :
         error_message = f"Error in function {func_name}: {str(e)}"
