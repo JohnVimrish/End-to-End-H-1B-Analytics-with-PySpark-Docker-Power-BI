@@ -14,7 +14,7 @@ class ThreadExecution () :
         for each_item in etl_table_properties :
 
              if each_item [JTV.dwh_tables_config_multiple_table_present] :
-                  table_name  = f"Multiple_Table_Components={mtp}"
+                  table_name  = f"Multiple_Table_Components-{mtp}"
                   mtp +=1
              else :
                   for one_input  in  each_item [JTV.dwh_tables_config_table_mapping].keys() :
@@ -23,11 +23,10 @@ class ThreadExecution () :
              self.table_etl_exec_array.append(etl_job_obj)
 
 
-
     def process_etl(    self, 
                         max_threads_num):
             
-
+        try :
             with ThreadPoolExecutor(max_workers = max_threads_num, 
                                     thread_name_prefix = self.thread_name) as executor:
 
@@ -42,3 +41,5 @@ class ThreadExecution () :
                         thread_output= future_output.result()                            
                     except Exception as exc:
                          raise (f'Thread enabling exception: {exc}')
+        except  Exception as error  :
+             raise error 

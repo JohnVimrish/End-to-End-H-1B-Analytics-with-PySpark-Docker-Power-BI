@@ -10,3 +10,8 @@ class CommonVariables () :
     pandas_dft  = "pandas"
     csv_file_type  = "csv"
     excel_file_type  ="excel"
+    multiline = "multiline"
+    header  = "header"
+    inferschema  = "inferSchema"
+    cursor_obj = "cursor_obj"
+    connection_obj= "connection_obj"

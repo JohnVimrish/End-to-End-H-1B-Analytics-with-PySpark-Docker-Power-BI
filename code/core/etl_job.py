@@ -6,7 +6,6 @@ from jsonmanipulations.jsontagvariables import JsonTagVariables as JsonTV
 from root.commonvariables import CommonVariables as common_var
 import sys
 import traceback
-import typing as t
 
 class ETLJob:
     def __init__(self, spark_obj:spark_utilities, db_obj:PostgresConnection, table_properties:dict, table_name):
@@ -15,7 +14,6 @@ class ETLJob:
         self.db_obj = db_obj
         self.pandas_util = Pandas_Utilities()
         self.table_properties = table_properties
-        self.table_name = table_name
 
     def handle_exception(self, func_name, exception):
         ex_type, ex_value, ex_traceback = sys.exc_info()
@@ -37,8 +35,8 @@ class ETLJob:
                 return self.spark_util_obj.func_csv_dataframe(csv_file)
 
             try  :
-                self.spark_util_obj.func_set_read_options(self.spark_util_obj.func_set_infer_schema())
-                self.spark_util_obj.func_set_read_options(self.spark_util_obj.func_set_header())
+                self.spark_util_obj.func_set_read_options(common_var.inferschema)
+                self.spark_util_obj.func_set_read_options(common_var.header)
                 
                 if self.table_properties[JsonTV.dwh_tables_config_multiple_table_present]:
 
@@ -57,7 +55,7 @@ class ETLJob:
                 self.spark_util_obj.write_spark_dft_to_db(spark_dataframe_altered,CPV.target_db_url,CPV.target_db_properties,self.table_name, self.table_properties[JsonTV.dwh_tables_config_write_mode], CPV.target_db_driver)
             
             except Exception as e:
-                 self.spark_util_obj.handle_spark_exception(self.process_csv_through_spark().__name__,e)
+                 self.spark_util_obj.handle_spark_exception("Process THrough Spark",e)
 
 
     def process_input_through_pandas(self, db_obj:PostgresConnection):
@@ -67,7 +65,7 @@ class ETLJob:
         
         def  __execute_copy_command_in_db(dataframe, table_name, alias_inputs:dict) :
             dft_renamed = self.pandas_util.rename_columns(alias_inputs,dataframe)
-            db_obj.copy_command_executor(__extract_copy_command(dft_renamed,table_name),self.pandas_util.convert_to_inmemory_csv_obj(dft_renamed))
+            db_obj.copy_command_executor( self.db_cursor,__extract_copy_command(dft_renamed,table_name),self.pandas_util.convert_to_inmemory_csv_obj(dft_renamed))
 
         try :
             excel_input   = CPV.tables_input_folder_location+"/"+self.table_properties[JsonTV.dwh_tables_config_xlsx_input]
@@ -75,7 +73,7 @@ class ETLJob:
             sheet_name = self.table_properties[JsonTV.dwh_tables_config_xlsx_input_sheet]
 
             if self.table_properties[JsonTV.dwh_tables_config_multiple_table_present]:
-                tables_nsheet = [table for table in self.table_properties[JsonTV.dwh_tables_config_multiple_table_input_present].values ()]
+                tables_nsheet = [table for table in self.table_properties[JsonTV.dwh_tables_config_table_mapping].values ()]
                 dataframe_dict  = self.pandas_util.extract_multiple_tables(excel_input,sheet_name,tables_nsheet,excel_use_cols)
                 for table_name, table_key in self.table_properties[JsonTV.dwh_tables_config_table_mapping].items():
                       if table_key in dataframe_dict:
@@ -85,34 +83,34 @@ class ETLJob:
             else:
                 dataframe = self.pandas_util.read_excel(excel_input, sheet_name, usecols=excel_use_cols) 
                 table_name  = "".join([ table_name for table_name in self.table_properties[JsonTV.dwh_tables_config_table_mapping].keys()])
-                __execute_copy_command_in_db(dataframe_dict[table_key],table_name,self.table_properties[JsonTV.dwh_tables_config_alias_query])          
+                __execute_copy_command_in_db(dataframe,table_name,self.table_properties[JsonTV.dwh_tables_config_alias_query])          
         except Exception as e:
-                 self.handle_exception(self.process_input_through_pandas().__name__,e)
+                 self.handle_exception("Process Input Through Pandas",e)
         
     def process_etl(self,):
         
         try:
             
-            self.db_obj.acquire_connection()
+            self.db_connection, self.db_cursor  = self.db_obj.acquire_connection()
             # Execute prequeries if specified
             if  self.table_properties[JsonTV.dwh_tables_config_execute_prequery] :
-                for query in t.Union(self.table_properties[JsonTV.dwh_tables_config_prequery],[]):
-                    self.db_obj.execute_sql(query, "")
+                for query in self.table_properties.get(JsonTV.dwh_tables_config_prequery,[]):
+                    self.db_obj.execute_sql(self.db_cursor,query, "")
 
             # Process CSV or Excel files
             if self.table_properties [JsonTV.dwh_tables_config_use_dft_of] == common_var.spark_dft and self.table_properties [JsonTV.dwh_tables_config_input_type] == common_var.csv_file_type:
                 self.process_csv_through_spark()
 
             elif self.table_properties [JsonTV.dwh_tables_config_use_dft_of] == common_var.pandas_dft and self.table_properties [JsonTV.dwh_tables_config_input_type] == common_var.excel_file_type:
-                self.process_csv_through_pandas(self.db_obj)
+                self.process_input_through_pandas(self.db_obj)
    
 
             # Execute postqueries if specified
             if  self.table_properties[JsonTV.dwh_tables_config_execute_postquery] :
-                for query in t.Union(self.table_properties[JsonTV.dwh_tables_config_postquery],[]):
-                    self.db_obj.execute_sql(query, "")
+                for query in self.table_properties.get(JsonTV.dwh_tables_config_postquery,[]):
+                    self.db_obj.execute_sql(self.db_cursor,query, "")
 
-            self.db_obj.release_connection()
+            self.db_obj.release_connection(self.db_connection, self.db_cursor)
         except Exception as e:
             self.handle_exception("process_etl", e)
 

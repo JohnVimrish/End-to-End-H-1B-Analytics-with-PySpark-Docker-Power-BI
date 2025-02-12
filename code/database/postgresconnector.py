@@ -15,61 +15,56 @@ class PostgresConnection():
             # passing exception to function
             raise ('{0} Connector  has failed to connect with error :{1}'.format(CPV.target_db, err))
 
-    def acquire_connection(self):
+    def acquire_connection(self,):
         try:
-            self.new_connection = self.connection_pool.getconn()
-            self.new_connection.autocommit = True
-            self.cursor_object = self.new_connection.cursor()
+            new_connection = self.connection_pool.getconn()
+            new_connection.autocommit = True
+            cursor_object = new_connection.cursor()
+            return new_connection,cursor_object 
 
         except db_error as error_message:
             raise  (f'Database has failed to create a new connection  :{error_message}')
 
-    def raise_and_close(self, log_statement, error_message):
+    def raise_and_close(self, log_statement, error_message,cursor_object):
         critical_error = ['server closed the connection unexpectedly']
         pg_exception_result = self.log_pgdb_exception(error_message)
         pg_error_msg   =pg_exception_result [1]
         if pg_error_msg in critical_error :
             raise pg_exception_result [0]
-        self.cursor_object.close()
+        cursor_object.close()
         raise log_statement.format(pg_exception_result [0])
        
 
-    def execute_sql(self, sql, error_message,query_argments = None):
+    def execute_sql(self,cursor_object,sql, error_message,query_argments = None):
         try:
-            if self.new_connection == None:
-                self.acquire_connection()
-            self.cursor_object.execute(sql,params=query_argments)
+            cursor_object.execute(sql,params=query_argments)
         except (Error, db_error) as error:
-            self.raise_and_close(error_message, error)
+            self.raise_and_close(error_message, error,cursor_object)
     
-    def get_full_write_records(self) :
-        return self.cursor_object.fetchall()
-
-    def get_full_write_row_count(self):
-        return self.write_row_count
+    def get_full_write_records(self,cursor_object) :
+        return cursor_object.fetchall()
     
-    def get_full_records_asdict_list (self) :
-        execution_query_description = self.cursor_object.description
+    def get_full_records_asdict_list (self,cursor_object) :
+        execution_query_description = cursor_object.description
         column_names = [column_name[0] for column_name in execution_query_description]
-        return [dict(zip(column_names,each_row))   for each_row in self.get_full_write_records()]
+        return [dict(zip(column_names,each_row))   for each_row in self.get_full_write_records(cursor_object)]
 
-    def get_curr_exec_rowcount(self):
-        return self.cursor_object.rowcount
+    def get_curr_exec_rowcount(self,cursor_object):
+        return cursor_object.rowcount
 
-    def cursor_status(self):
-        return self.cursor_object.closed
+    def cursor_status(self,cursor_object):
+        return cursor_object.closed
     
-    def copy_command_executor (self, query, input_data) :
-        with self.cursor_object.copy(statement =query) as copy:
+    def copy_command_executor (self,cursor_object, query, input_data) :
+        with cursor_object.copy(statement =query) as copy:
             copy.write(input_data.getvalue())
-        self.new_connection.commit()
 
-    def release_connection(self):
+    def release_connection(self,connection,cursor_object):
         try:
-            self.connection_pool.putconn(self.new_connection)
+            self.connection_pool.putconn(connection)
         except (Error, db_error) as error:
             self.raise_and_close(
-                'Unable to Close Connection , Error :{} .', error)
+                'Unable to Close Connection , Error :{} .', error,cursor_object)
 
     def log_pgdb_exception(self, err_msg_obj):
         err_type, err_obj, traceback = sys.exc_info()

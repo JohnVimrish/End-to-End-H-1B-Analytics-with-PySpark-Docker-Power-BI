@@ -10,6 +10,7 @@ class spark_utilities () :
         def __init_spark_session () :
                 return  SparkSession.builder.config(conf=ObjSparkConfig).getOrCreate()
         self.SparkSession_init  = __init_spark_session ()
+        self.read_func  = None
       
     def func_cache_dft_data(self,dataframe, storage_mode :str ) :
         self.storage_mode = StorageLevel.MEMORY_AND_DISK if storage_mode == common_var.m_d else StorageLevel.MEMORY_ONLY if storage_mode == common_var.m_only else StorageLevel.DISK_ONLY
@@ -41,23 +42,26 @@ class spark_utilities () :
       self.read_func = self.SparkSession_init.read()
 
     def func_set_infer_schema(self, infer_schema=True):
-        self.read_func = self.read_func.option("inferSchema", str(infer_schema).lower())
+        self.read_func = self.read_func.option(common_var.inferschema, str(infer_schema).lower())
 
     def func_set_header(self, header=True):
-        self.read_func = self.read_func.option("header", str(header).lower())
+        self.read_func = self.read_func.option(common_var.header, str(header).lower())
 
     def func_read_multiline(self, multiline=True):
-        self.read_func = self.read_func.option("multiline", str(multiline).lower())
+        self.read_func = self.read_func.option(common_var.multiline, str(multiline).lower())
 
-    def func_set_read_options (self,func ) :
+    def func_set_read_options (self,func_type,argument_overide_bool= True) :
         try  :
-            if self.read_func  :
-               return func()
-            else :
-              self.func_initiate_spark_read()
-              return func()
+            if self.read_func   is None : 
+                  self.func_initiate_spark_read()
+            if func_type == common_var.inferschema :
+                self.func_set_infer_schema (argument_overide_bool)
+            elif  func_type == common_var.header :
+                self.func_set_header (argument_overide_bool)
+            elif   func_type == common_var.multiline :
+                self.func_read_multiline (argument_overide_bool)
         except (AnalysisException, PySparkException) as e:
-            self.handle_spark_exception(func.__name__, e)
+            self.handle_spark_exception(func_type, e)
 
     def func_limit_rows_dataframe (self,dataframe, limit_row_count) :
         return dataframe. limit(limit_row_count)
