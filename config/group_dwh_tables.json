@@ -32,7 +32,6 @@
             "input_type": "csv",
             "use_dft_of" : "spark",
             "csv_input": [
-                "h1b16.csv",
                 "h1b17.csv",
                 "h1b18.csv"
             ],
@@ -56,9 +55,9 @@
         {
             "input_type": "csv",
             "use_dft_of" : "spark",
-            "csv_input": "h1b11-15.csv",
+            "csv_input": ["h1b11-15.csv","h1b16.csv"],
             "multiple_table_present": false,
-            "multiple_table_input_present": false,
+            "multiple_table_input_present": true,
             "table_mapping": {
                 "h1b_analysis_stg.stg_h1b_data_second": "data for  h1b data second"
             },
@@ -136,8 +135,8 @@
                 "h1b_analysis_stg.stg_requested_action": "Lookup Table for Requested Action",
                 "h1b_analysis_stg.stg_ben_education_code": "Lookup Table for Ben Education Code"
             },
-            "execute_prequery": false,
-            "execute_postquery": false,
+            "execute_prequery": true,
+             "execute_postquery": true,
             "alias_column_names": true,
             "alias_query": {
                 "h1b_analysis_stg.stg_trk_metadata": {
@@ -161,11 +160,11 @@
                     "Code Description": "code_description"
                 }
             },
-            "prequery": [" truncate table h1b_analysis_stg.stg_trk_metadata;" ,
-    " truncate table h1b_analysis_stg.stg_basis_for_classification;", 
-    " truncate table h1b_analysis_stg.stg_requested_action;" ,
-    " truncate table h1b_analysis_stg.stg_ben_education_code;" ,
-    " truncate table h1b_analysis_stg.stg_class_preference;" ],
+            "prequery": ["truncate table h1b_analysis_stg.stg_trk_metadata;" ,
+    "truncate table h1b_analysis_stg.stg_basis_for_classification;", 
+    "truncate table h1b_analysis_stg.stg_requested_action;" ,
+    "truncate table h1b_analysis_stg.stg_ben_education_code;" ,
+    "truncate table h1b_analysis_stg.stg_class_preference;" ],
             "postquery": []
         },
         {
@@ -179,8 +178,8 @@
             "table_mapping": {
                 "h1b_analysis_stg.stg_job_codes": "I-129 H1B Job Code"
             },
-            "execute_prequery": false,
-            "execute_postquery": false,
+            "execute_prequery": true,
+             "execute_postquery": true,
             "alias_column_names": true,
             "alias_query": {
                 "Occupation Category": "occupation_category",
@@ -201,8 +200,8 @@
             "table_mapping": {
                 "h1b_analysis_stg.stg_country_code": "Country Codes"
             },
-            "execute_prequery": false,
-            "execute_postquery": false,
+            "execute_prequery": true,
+             "execute_postquery": true,
             "alias_column_names": true,
             "alias_query": {
                 "Country Code (5)": "country_code_five_chars",
@@ -214,5 +213,4 @@
         }
     ]
 }
-
 

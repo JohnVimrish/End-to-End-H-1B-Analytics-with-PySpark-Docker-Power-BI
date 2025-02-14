@@ -20,7 +20,7 @@ class Pandas_Utilities:
     def extract_multiple_tables(self, file_path, sheet_name, table_names, usecols=None):
         pandasDF = pd.read_excel(file_path, sheet_name=sheet_name, header=None, usecols=usecols)
         groups = pandasDF[0].isin(table_names).cumsum()
-        self.multiple_tables = {g.iloc[0, 0]: g.iloc[1:].dropna(how='all').rename(columns=g.iloc[1]).iloc[1:] for k, g in pandasDF.groupby(groups)}
+        self.multiple_tables = {g.iloc[0, 0]: g.iloc[1:].dropna(how='all').rename(columns=g.iloc[1]) for k, g in pandasDF.groupby(groups)}
         return self.multiple_tables
     
     def convert_to_inmemory_csv_obj(self,dataframe) :

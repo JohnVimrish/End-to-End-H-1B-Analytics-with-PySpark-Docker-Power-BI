@@ -1,8 +1,10 @@
-from pyspark.sql import SparkSession,functions as F 
+from pyspark.sql import SparkSession,functions as F ,types as T
 from pyspark import StorageLevel
 from pyspark.errors import PySparkException
 from pyspark.sql.utils import AnalysisException
 from root.commonvariables import CommonVariables as common_var
+from pyspark.sql import DataFrame 
+
 
 class spark_utilities () :
     
@@ -86,13 +88,23 @@ class spark_utilities () :
         formatted_data_type = [f'{item.strip()}' for item in query.split(',')]
         return dataframe.selectExpr(formatted_data_type)
 
-    def func_exclude_columns_from_dft(self,dataframe,exclude_columns:list) :
-          selected_columns = [col for col in dataframe.columns if col not in exclude_columns]
+    def func_exclude_columns_from_dft(self,dataframe,exclude_columns:str) :
+          selected_columns = [col for col in dataframe.columns if not (col.startswith(exclude_columns))]
           df_selected = dataframe.select(*selected_columns)
           return df_selected
     
     def write_spark_dft_to_db (self,dataframe,db_url:str,db_properties:dict,table_name:str,mode:str,driver) :
-        dataframe.write.option(common_var.driver_attribute, driver).jdbc(url=db_url, table=table_name, properties=db_properties,mode =mode).save()
+        dataframe.write.option(common_var.driver_attribute, driver).jdbc(url=db_url, table=table_name, properties=db_properties,mode =mode)
+    
+    def add_missing_columns(self,df: DataFrame, ref_df: DataFrame) -> DataFrame:
+        missing_col = []
+        for col in ref_df.schema:
+            if col.name not in df.columns:
+                missing_col.append(col.name)
+            
+        df = df.select(['*'] + [F.lit(None).cast(T.NullType()).alias(c) for c in missing_col])
+
+        return df
     
     def handle_spark_exception(self, func_name , e) :
         error_message = f"Error in function {func_name}: {str(e)}"

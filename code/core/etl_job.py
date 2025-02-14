@@ -42,7 +42,8 @@ class ETLJob:
 
                     for csv_file in self.table_properties[JsonTV.dwh_tables_config_csv_input]:
                         if 'spark_dataframe' in locals()  :
-                            spark_dataframe = spark_dataframe.union(__process_inputs(CPV.tables_input_folder_location+"/"+csv_file))
+                            merge_dataframe  = self.spark_util_obj.add_missing_columns(__process_inputs(CPV.tables_input_folder_location+"/"+csv_file),spark_dataframe)
+                            spark_dataframe = spark_dataframe.unionByName(merge_dataframe)
                         else:
                             spark_dataframe = __process_inputs(CPV.tables_input_folder_location+"/"+csv_file)
                 else:
@@ -60,7 +61,7 @@ class ETLJob:
     def process_input_through_pandas(self, db_obj:PostgresConnection):
 
         def __extract_copy_command  (dataframe, table_name) :
-             return   f"""COPY {table_name} ({", ".join([col for col in dataframe.columns])}) FROM STDIN WITH CSV"""
+             return   f"""COPY {table_name} ({", ".join([col for col in dataframe.columns])}) FROM STDIN WITH (FORMAT csv, HEADER true)"""
         
         def  __execute_copy_command_in_db(dataframe, table_name, alias_inputs:dict) :
             dft_renamed = self.pandas_util.rename_columns(alias_inputs,dataframe)
@@ -76,7 +77,8 @@ class ETLJob:
                 dataframe_dict  = self.pandas_util.extract_multiple_tables(excel_input,sheet_name,tables_nsheet,excel_use_cols)
                 for table_name, table_key in self.table_properties[JsonTV.dwh_tables_config_table_mapping].items():
                       if table_key in dataframe_dict:
-                            __execute_copy_command_in_db(dataframe_dict[table_key],table_name,self.table_properties[JsonTV.dwh_tables_config_alias_query][table_name])
+                            dft = dataframe_dict[table_key].iloc[1:].reset_index(drop=True)  # remove the header element 
+                            __execute_copy_command_in_db(dft,table_name,self.table_properties[JsonTV.dwh_tables_config_alias_query][table_name])
                       else  :
                           raise ( table_name,table_key, "Not present in the  code")
             else:
