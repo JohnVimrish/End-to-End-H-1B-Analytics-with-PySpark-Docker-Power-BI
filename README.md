@@ -104,7 +104,7 @@ To execute Spark jobs within the container, run the following commands, these ar
 /home/john_user/pyspark_learning/config/pyspark_configurations.json \
 /home/john_user/pyspark_learning/config/database.config \
 /home/john_user/pyspark_learning/config/group_dwh_tables.json \
-> /root/docker-apachespark/execution_log.txt 2> /root/docker-apachespark/execution_error_log.txt
+2> /root/docker-apachespark/execution_error_log.txt
 
 # for temp runs 
 /home/john_user/pyspark_learning_venv/bin/python /home/john_user/pyspark_learning/code/root/populate_pipeline_main.py \
@@ -112,7 +112,7 @@ To execute Spark jobs within the container, run the following commands, these ar
 /home/john_user/pyspark_learning/config/pyspark_configurations.json \
 /home/john_user/pyspark_learning/config/database.config \
 /home/john_user/pyspark_learning/config/group_dwh_tables-tempruns.json \
-> /root/docker-apachespark/execution_log.txt 2> /root/docker-apachespark/execution_error_log.txt
+2> /root/docker-apachespark/execution_error_log.txt
 ```
 
 ## Development Workflow
