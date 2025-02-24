@@ -250,7 +250,8 @@ fein,mail_addr,city,state,zip,agent_first_name,agent_last_name,lottery_year,stat
 first_decision,i129_employer_name,pet_zip,requested_class,
 basis_for_classification,requested_action,number_of_beneficiaries,ben_sex,ben_country_of_birth,ben_current_class,
 dol_eta_case_number,worksite_city,worksite_state,worksite_zip,naics_code 
-order by  case when lower(coalesce(full_time_ind,'N'))  ='y' then 1 else 0 end desc, receipt_number, rec_date desc ,first_decision_date,case when job_title is null  then  0 else length(job_title) end desc ) row_num
+order by  case when lower(coalesce(full_time_ind,'N'))  ='y' then 1 else 0 end desc, 
+receipt_number, rec_date desc ,first_decision_date,case when job_title is null  then  0 else length(job_title) end desc ) row_num
 from h1b_analysis_stg.stg_trk_disclosure_data stdd ) t
         WHERE t.row_num > 1 );
 
@@ -309,3 +310,60 @@ and agent_last_name  = 'Medina'
 and status_type  = 'SELECTED'
 and rec_date  = '9/26/2023'
 and ben_year_of_birth  = '1998'
+
+
+
+
+update  h1b_analysis_stg.stg_lca_disclosure_data d
+set 
+wage_unit_of_pay = lm.up_pw_unit_of_pay,
+prevailing_wage = lm.up_prevailing_wage::numeric,
+pw_unit_of_pay = lm.up_pw_unit_of_pay,
+pw_wage_level = lm.up_pw_wage_level ,
+pw_oes_year = lm.up_pw_oes_year 
+from (WITH 
+logic as  ( 
+select 
+case_number , case_status ,
+wage_rate_of_pay_from,wage_rate_of_pay_to,wage_unit_of_pay,prevailing_wage,pw_unit_of_pay,pw_tracking_number,pw_wage_level,
+pw_oes_year, pw_other_source,
+case when not(REGEXP_LIKE(pw_tracking_number, '^\d+(\.\d+)?$')) then 1 else 0  end bool_track_number , 
+case when REGEXP_LIKE(pw_unit_of_pay , '^\d+(\.\d+)?$') then 1  else 0 end  bool_unit_of_pay , 
+case when REGEXP_LIKE(wage_unit_of_pay  , '^\d+(\.\d+)?$') then 1 else 0 end bool_wage_unit_of_pay 
+FROM h1b_analysis_stg.stg_lca_disclosure_data
+WHERE REGEXP_LIKE(pw_unit_of_pay, '^\d+(\.\d+)?$') OR REGEXP_LIKE(wage_unit_of_pay, '^\d+(\.\d+)?$')),
+processed_data AS (
+    SELECT 
+        case_number, 
+        case_status,
+        CASE 
+            WHEN  bool_track_number = 1 AND LOWER(pw_tracking_number) NOT IN ('yes', 'no', 'y', 'n') 
+            THEN pw_tracking_number 
+            ELSE 'N/A' 
+        END AS  up_pw_unit_of_pay,
+        CASE 
+            WHEN bool_unit_of_pay = 1  THEN 
+             (case when pw_unit_of_pay ::numeric  < (case when  bool_wage_unit_of_pay = 1  then wage_unit_of_pay::numeric  else 0::numeric end  ) 
+              then  wage_unit_of_pay::text else pw_unit_of_pay end ) 
+              WHEN LOWER(pw_unit_of_pay) LIKE '%year%' THEN wage_unit_of_pay 
+            ELSE '0' 
+        END AS  up_prevailing_wage,
+        pw_wage_level,
+        pw_oes_year,
+        pw_other_source
+     FROM logic
+)
+SELECT 
+    case_number, 
+    case_status,
+    up_prevailing_wage, 
+    up_pw_unit_of_pay,
+    CASE 
+        WHEN up_prevailing_wage != 'N/A'      THEN pw_wage_level     END AS up_pw_wage_level,    
+    CASE 
+        WHEN up_prevailing_wage != 'N/A' THEN pw_other_source  END AS up_pw_oes_year
+FROM processed_data) lm 
+where
+d.case_number = lm.case_number
+and d.case_status =  lm.case_status
+;
